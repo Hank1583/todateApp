@@ -3,22 +3,15 @@ platform :ios, '13.0'
 use_frameworks! :linkage => :static
 use_modular_headers!
 
-# --- robust podhelper loader (supports both layouts) ---
-flutter_application_path = File.expand_path('..', __dir__)
-helper_in_ios   = File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
-helper_in_dotios = File.expand_path(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb'))
-
-if File.exist?(helper_in_ios)
-  require helper_in_ios
-elsif File.exist?(helper_in_dotios)
-  eval(File.read(helper_in_dotios), binding)
-else
-  abort('❌ podhelper.rb not found. Run `flutter pub get` before CocoaPods, or ensure Flutter generated iOS files.')
-end
-# -------------------------------------------------------
+# 讀 ios/Flutter/podhelper.rb
+require File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
 
 target 'Runner' do
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  # ❌ 原本（會讓 helper 去找 ios/.flutter-plugins-dependencies）
+  # flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+
+  # ✅ 正確：不帶參數，讓 helper 自己從專案根找 .flutter-plugins-dependencies
+  flutter_install_all_ios_pods
 end
 
 post_install do |installer|
