@@ -17,27 +17,29 @@ def flutter_additional_ios_build_settings(installer)
 end
 
 def flutter_install_ios_plugin_pods
-  # 專案根的 .flutter-plugins-dependencies
   plugins_json = File.expand_path(File.join(__dir__, '../../.flutter-plugins-dependencies'))
   raise "Missing #{plugins_json}. Run `flutter pub get`." unless File.exist?(plugins_json)
 
   ios_plugins = JSON.parse(File.read(plugins_json)).dig("plugins","ios") || []
+  project_root = File.expand_path('../..', __dir__)
+
   ios_plugins.each do |p|
-    plugin_name = p["name"]
-    plugin_path = File.expand_path(p["path"], File.expand_path('../..', __dir__))
+    name = p["name"]
+    # `path` 會是套件根（例如 ~/.pub-cache/.../webview_flutter_wkwebview-3.22.0）
+    plugin_root = File.expand_path(p["path"], project_root)
+    root_spec   = File.join(plugin_root, "#{name}.podspec")
+    ios_dir     = File.join(plugin_root, 'ios')
+    ios_spec    = File.join(ios_dir, "#{name}.podspec")
 
-    # A. podspec 在套件根目錄？
-    root_podspec = File.join(plugin_path, "#{plugin_name}.podspec")
-    # B. 或在 ios 子目錄？
-    ios_dir      = File.join(plugin_path, 'ios')
-    ios_podspec  = File.join(ios_dir, "#{plugin_name}.podspec")
-
-    if File.exist?(root_podspec)
-      pod plugin_name, :path => plugin_path
-    elsif File.exist?(ios_podspec)
-      pod plugin_name, :path => ios_dir
+    if File.exist?(ios_spec)
+      puts "→ Using iOS podspec for #{name}: #{ios_dir}"
+      pod name, :path => ios_dir
+    elsif File.exist?(root_spec)
+      puts "→ Using root podspec for #{name}: #{plugin_root}"
+      pod name, :path => plugin_root
     else
-      raise "No podspec for #{plugin_name} under #{plugin_path} (tried root & ios/)."
+      # 印出更清楚的錯誤，方便你我對照
+      raise "No podspec for #{name}. Tried:\n - #{ios_spec}\n - #{root_spec}"
     end
   end
 end
