@@ -3,19 +3,16 @@ platform :ios, '13.0'
 use_frameworks! :linkage => :static
 use_modular_headers!
 
-require File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
+# 使用 Flutter 生成在 .ios 的官方 podhelper
+flutter_application_path = File.expand_path('..', __dir__)
+eval(File.read(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')), binding)
 
 target 'Runner' do
-  flutter_install_all_ios_pods    # 不要傳 File.dirname(...) 之類的參數
+  # 官方 helper 需要這個參數（App 目錄），請保留
+  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
 
 post_install do |installer|
+  # 官方提供的 build 設定（含 Bitcode 關閉等）
   flutter_additional_ios_build_settings(installer)
-  installer.pods_project.targets.each do |t|
-    t.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-      config.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'YES'
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-    end
-  end
 end
