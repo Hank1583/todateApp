@@ -6,7 +6,7 @@ use_modular_headers!
 require File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
 
 target 'Runner' do
-  flutter_install_all_ios_pods    # ← 不要傳 File.dirname(...) 之類的參數
+  flutter_install_all_ios_pods    # 不要傳 File.dirname(...) 之類的參數
 end
 
 post_install do |installer|
