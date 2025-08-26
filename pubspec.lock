@@ -247,7 +247,7 @@ packages:
       sha256: a3d461fe3467014e05f3ac4962e5fdde2a4bf44c561cb53e9ae5c586600fdbc3
       url: "https://pub.dev"
     source: hosted
-    version: "3.22.0"
+    version: "3.23.0"
 sdks:
   dart: ">=3.5.1 <4.0.0"
   flutter: ">=3.24.0"
