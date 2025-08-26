@@ -3,10 +3,11 @@ platform :ios, '13.0'
 use_frameworks! :linkage => :static
 use_modular_headers!
 
-# 改用 repo 裡的 ios/Flutter/podhelper.rb
+# 以官方慣例載入 ios/Flutter/podhelper.rb
 require File.expand_path(File.join('..', 'Flutter', 'podhelper'), __FILE__)
 
 target 'Runner' do
+  # 與官方模板相容的呼叫方式（帶 app 路徑參數）
   flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
 end
 
