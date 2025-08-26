@@ -3,16 +3,14 @@ platform :ios, '13.0'
 use_frameworks! :linkage => :static
 use_modular_headers!
 
-# 使用 Flutter 生成在 .ios 的官方 podhelper
-flutter_application_path = File.expand_path('..', __dir__)
-eval(File.read(File.join(flutter_application_path, '.ios', 'Flutter', 'podhelper.rb')), binding)
+# 改用 repo 裡的 ios/Flutter/podhelper.rb
+require File.expand_path(File.join(__dir__, 'Flutter', 'podhelper.rb'))
 
 target 'Runner' do
-  # 官方 helper 需要這個參數（App 目錄），請保留
-  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  # 不要傳參數，讓 helper 自己處理路徑
+  flutter_install_all_ios_pods
 end
 
 post_install do |installer|
-  # 官方提供的 build 設定（含 Bitcode 關閉等）
   flutter_additional_ios_build_settings(installer)
 end
