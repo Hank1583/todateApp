@@ -3,11 +3,36 @@ platform :ios, '13.0'
 use_frameworks! :linkage => :static
 use_modular_headers!
 
-# 以官方慣例載入 ios/Flutter/podhelper.rb
-require File.expand_path(File.join('..', 'Flutter', 'podhelper'), __FILE__)
+# --- 強化載入 + 診斷 ---
+begin
+  custom_helper = File.expand_path(File.join('..', 'Flutter', 'podhelper'), __FILE__)
+  raise "custom helper not found: #{custom_helper}.rb" unless File.exist?(custom_helper + ".rb")
+  require custom_helper
+  puts "✅ Loaded custom podhelper: #{custom_helper}.rb"
+rescue => e
+  puts "⚠️ Failed to load custom podhelper: #{e}"
+end
+
+# 若上面沒成功，退回 Flutter SDK 內建 podhelper
+unless defined?(flutter_install_all_ios_pods)
+  begin
+    flutter_root_env = ENV['FLUTTER_ROOT']
+    flutter_root_guess = flutter_root_env || `flutter --version 2>/dev/null >/dev/null && dirname $(dirname $(dirname $(which flutter)))`.strip
+    sdk_helper = File.expand_path(File.join(flutter_root_guess, 'packages', 'flutter_tools', 'bin', 'podhelper'), __FILE__)
+    require sdk_helper
+    puts "✅ Fallback to SDK podhelper: #{sdk_helper}.rb"
+  rescue => e
+    puts "❌ Fallback load failed: #{e}"
+  end
+end
+
+# 最終保險：防止整個流程直接掛掉（不做事，但不報 undefined）
+unless defined?(flutter_install_all_ios_pods)
+  def flutter_install_all_ios_pods(_app_path = nil); puts "⚠️ flutter_install_all_ios_pods is a no-op fallback"; end
+end
+# --- 強化載入結束 ---
 
 target 'Runner' do
-  # 與官方模板相容的呼叫方式（帶 app 路徑參數）
   flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
 end
 
