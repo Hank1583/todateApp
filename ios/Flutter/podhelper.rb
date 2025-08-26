@@ -41,7 +41,7 @@ def flutter_install_ios_plugin_pods
 
     if spec_file
       puts "→ Installing #{name} via :podspec #{spec_file}"
-      pod name, :podspec => spec_file
+      pod name, :path => File.dirname(spec_file)
     elsif Dir.exist?(ios_dir)
       puts "→ Installing #{name} via :path #{ios_dir}"
       pod name, :path => ios_dir
