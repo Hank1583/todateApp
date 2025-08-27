@@ -87,7 +87,7 @@ workflows:
       - build/ios/archive/*.xcarchive
       - /tmp/xcodebuild_logs/*.log
       - flutter_drive.log
-      - **/xcodebuild*.log
+      - "**/xcodebuild*.log"
 
     publishing:
       email:
