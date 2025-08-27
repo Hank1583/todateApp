@@ -43,10 +43,35 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- ATS 設定：放寬 Web 內容 + 指定網域白名單 -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	<key>NSAllowsArbitraryLoadsInWebContent</key>
-	<true/>
+		<!-- 允許 WKWebView 的內容更寬鬆載入（不影響原生 API） -->
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+
+		<!-- 針對實際會用到的網域做精準白名單；之後可再收斂 TLS 要求 -->
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>gmb.taipeiads.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key><true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+				<key>NSExceptionRequiresForwardSecrecy</key><false/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key><true/>
+				<key>NSTemporaryExceptionMinimumTLSVersion</key><string>TLSv1.0</string>
+			</dict>
+
+			<!-- 如登入/跳轉到其他網域，照這個格式再加：
+			<key>example-cdn.com</key>
+			<dict>
+				<key>NSIncludesSubdomains</key><true/>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key><true/>
+				<key>NSExceptionRequiresForwardSecrecy</key><false/>
+			</dict>
+			-->
+		</dict>
 	</dict>
 </dict>
 </plist>
