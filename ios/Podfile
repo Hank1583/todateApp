@@ -1,59 +1,10 @@
-platform :ios, '13.0'
-
-# 以 Flutter + Firebase/多數 SDK，static frameworks 較穩
-use_frameworks! :linkage => :static
-# 一般情況不建議全域開 modular headers，容易造成衝突；若你確定某些 pod 需要，再個別指定即可
-# use_modular_headers!
-
-ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
-# --- 強化載入 + 診斷（保留你的機制） ---
-begin
-  custom_helper = File.expand_path(File.join('..', 'Flutter', 'podhelper'), __FILE__)
-  raise "custom helper not found: #{custom_helper}.rb" unless File.exist?(custom_helper + ".rb")
-  require custom_helper
-  puts "✅ Loaded custom podhelper: #{custom_helper}.rb"
-rescue => e
-  puts "⚠️ Failed to load custom podhelper: #{e}"
-end
-
-unless defined?(flutter_install_all_ios_pods)
-  begin
-    flutter_root_env = ENV['FLUTTER_ROOT']
-    flutter_root_guess = flutter_root_env || `flutter --version 2>/dev/null >/dev/null && dirname $(dirname $(dirname $(which flutter)))`.strip
-    sdk_helper = File.expand_path(File.join(flutter_root_guess, 'packages', 'flutter_tools', 'bin', 'podhelper'), __FILE__)
-    require sdk_helper
-    puts "✅ Fallback to SDK podhelper: #{sdk_helper}.rb"
-  rescue => e
-    puts "❌ Fallback load failed: #{e}"
-  end
-end
-
-unless defined?(flutter_install_all_ios_pods)
-  def flutter_install_all_ios_pods(_app_path = nil); puts "⚠️ flutter_install_all_ios_pods is a no-op fallback"; end
-end
-# --- 強化載入結束 ---
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
 
 target 'Runner' do
-  flutter_install_all_ios_pods(File.dirname(File.realpath(__FILE__)))
-end
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
 
-post_install do |installer|
-  flutter_additional_ios_build_settings(installer)
+  # Pods for Runner
 
-  installer.pods_project.targets.each do |t|
-    t.build_configurations.each do |bc|
-      # 關掉 Bitcode（避免上架/連結時各種兼容性問題）
-      bc.build_settings['ENABLE_BITCODE'] = 'NO'
-      # 不做穩定 ABI 導致的限制（降低 binary/符號相容性踩雷）
-      bc.build_settings['BUILD_LIBRARY_FOR_DISTRIBUTION'] = 'NO'
-      # 鎖定最低版本（與 platform 對齊；你現在設 13.0 就用 13.0）
-      bc.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-      # 針對真機不要排除 arm64（避免架構不相容）
-      excluded_iphoneos = bc.build_settings['EXCLUDED_ARCHS[sdk=iphoneos*]']
-      if excluded_iphoneos && excluded_iphoneos.include?('arm64')
-        bc.build_settings['EXCLUDED_ARCHS[sdk=iphoneos*]'] = ''
-      end
-    end
-  end
 end

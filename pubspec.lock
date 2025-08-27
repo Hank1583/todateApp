@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
+      sha256: caac504f942f41dfadcf45229ce8c47065b93919a12739f20d6173a883c5ec73
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.8"
+    version: "1.0.2"
   fake_async:
     dependency: transitive
     description:
@@ -66,10 +66,10 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: "3f41d009ba7172d5ff9be5f6e6e6abb4300e263aab8866d2a0842ed2a70f8f0c"
+      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "2.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -103,10 +103,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "976c774dd944a42e83e2467f4cc670daef7eed6295b10b36ae8c85bcbf828235"
+      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "2.1.1"
   matcher:
     dependency: transitive
     description:
@@ -139,14 +139,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  plugin_platform_interface:
-    dependency: transitive
-    description:
-      name: plugin_platform_interface
-      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.8"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -216,38 +208,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.2.5"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      sha256: "889a0a678e7c793c308c68739996227c9661590605e70b1f6cf6b9a6634f7aec"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.10.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      sha256: "512c26ccc5b8a571fd5d13ec994b7509f142ff6faf85835e243dde3538fdc713"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.2"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      sha256: "7cb32b21825bd65569665c32bb00a34ded5779786d6201f5350979d2d529940d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.13.0"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      sha256: a3d461fe3467014e05f3ac4962e5fdde2a4bf44c561cb53e9ae5c586600fdbc3
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.23.0"
 sdks:
-  dart: ">=3.5.1 <4.0.0"
-  flutter: ">=3.24.0"
+  dart: ">=3.3.0 <4.0.0"
+  flutter: ">=3.18.0-18.0.pre.54"

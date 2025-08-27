@@ -1,8 +1,1 @@
 #include "Generated.xcconfig"
-
-OTHER_LDFLAGS = $(inherited) -ObjC
-ENABLE_BITCODE = NO
-IPHONEOS_DEPLOYMENT_TARGET = 13.0
-
-// 針對真機不要排除 arm64
-EXCLUDED_ARCHS[sdk=iphoneos*] =
