@@ -3,24 +3,27 @@ workflows:
     name: iOS Workflow
     instance_type: mac_mini_m2
     max_build_duration: 120
+
     integrations:
       app_store_connect: codemagic
+
     environment:
       ios_signing:
         distribution_type: app_store
-        bundle_identifier: com.taipeiads.todate.webview
-        team_id: "53M79C2XFB"
+        bundle_identifier: com.taipeiads.todate.webview   # ← 與 Xcode/Apple 一致
       vars:
-        APP_APPLE_ID: "6751520810"
+        TEAM_ID: "53M79C2XFB"         # ← Apple Developer Team ID（10 碼）
+        APP_APPLE_ID: "6751520810"    # ← App 的 Apple ID（數字）
         IOS_SCHEME: "Runner"
       flutter: stable
       xcode: 16.2
       cocoapods: default
+
     scripts:
-      - name: "Set up code signing"
+      - name: "Set up code signing (force specific Team)"
         script: |
-          # 若你已在 UI 開啟自動簽章，這行會自動抓對 Profile
-          xcode-project use-profiles --team-id "$CM_TEAM_ID" || xcode-project use-profiles
+          # 用 Team ID 指定要抓的 profiles（或省略讓 Integration 自動判定）
+          xcode-project use-profiles --team-id "$TEAM_ID" || xcode-project use-profiles
 
       - name: "Prebuild"
         script: |
@@ -31,6 +34,7 @@ workflows:
           INFO_PLIST="ios/Runner/Info.plist"
           /usr/libexec/PlistBuddy -c "Set :UILaunchStoryboardName LaunchScreen" "$INFO_PLIST" || true
           cd ios && pod repo update && pod install && cd -
+          plutil -p "$INFO_PLIST" || true
 
       - name: "Next build number"
         script: |
@@ -52,3 +56,11 @@ workflows:
       - "/tmp/xcodebuild_logs/*.log"
       - flutter_drive.log
       - "**/xcodebuild*.log"
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+        submit_to_app_store: false
