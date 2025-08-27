@@ -9,7 +9,7 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.taipeiads.todate.webview
-        team_id: YOUR_APPLE_TEAM_ID   # ← 到 Developer → Membership 看到的 10 碼字母數字
+        team_id: 53M79C2XFB   # ← 到 Developer → Membership 看到的 10 碼字母數字
       vars:
         APP_APPLE_ID: "6751520810"    # App Store Connect 裡該 App 的 Apple ID（數字）
         IOS_SCHEME: "Runner"
